@@ -1,0 +1,63 @@
+SELECT avgT1.avg - avgT2.avg 
+FROM (	
+	SELECT avg(avgStars) as avg
+	FROM (
+			SELECT title, avg(stars) as avgStars, year
+			FROM Movie, Rating
+			WHERE Movie.mID == Rating.mID
+			GROUP BY title
+		)
+	GROUP BY year < 1980) avgT1,  
+	(	
+	SELECT avg(avgStars) as avg
+	FROM (
+			SELECT title, avg(stars) as avgStars, year
+			FROM Movie, Rating
+			WHERE Movie.mID == Rating.mID
+			GROUP BY title
+		)
+	GROUP BY year >= 1980) avgT2
+WHERE avgT1.avg <> avgT2.avg and avgT1.avg > avgT2.avg 
+	
+
+
+SELECT avgT1.avg , avgT2.avg 
+FROM (	
+	SELECT avg(avgStars) as avg
+	FROM (
+			SELECT title, avg(stars) as avgStars
+			FROM Movie, Rating
+			WHERE Movie.mID == Rating.mID and year < 1980
+			GROUP BY title
+		)
+	) avgT1,  
+	(	
+	SELECT avg(avgStars) as avg
+	FROM (
+			SELECT title, avg(stars) as avgStars
+			FROM Movie, Rating
+			WHERE Movie.mID == Rating.mID and year > 1980
+			GROUP BY title
+		)
+	) avgT2
+WHERE avgT1.avg <> avgT2.avg and avgT1.avg > avgT2.avg 
+	
+
+
+
+
+
+select AVG(avgT1.avgStars) - AVG(avgT2.avgStars)
+from
+	(
+	SELECT title, avg(stars) as avgStars, year
+	FROM Movie, Rating
+	WHERE Movie.mID == Rating.mID and year < 1980
+	GROUP BY Movie.mID) AS avgT1,
+	(
+	SELECT title, avg(stars) as avgStars, year
+	FROM Movie, Rating
+	WHERE Movie.mID == Rating.mID and year > 1980
+	GROUP BY Movie.mID) AS avgT2
+		
+	
